@@ -4,10 +4,80 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="assets/main.css" />
-    <script src="assets/main.js"></script>
+    <script src="assets/main.js" defer></script>
     <title>JS-Basics-Homework</title>
   </head>
   <body>
-    <h2>JS Basics Homework</h2>
+    <!-- <h2>JS Basics Homework</h2> -->
+
+    <div class="wrapper">
+      <div class="add-student">
+        <h2>Add students and distribute them in teams</h2>
+
+        <button class="btn-open-form">Add student</button>
+      </div>
+
+      <div class="students">
+        <h2>Students list</h2>
+        <ul class="list"></ul>
+      </div>
+
+      <div class="collect-data">
+        <h2>Student's information</h2>
+        <form method="get" class="form">
+          <div class="form-group">
+            <input
+              id="name"
+              class="name"
+              type="text"
+              name="name"
+              placeholder="Enter student's name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              class="age"
+              type="numeric"
+              name="age"
+              id="age"
+              placeholder="Enter student's age"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <h2>Student was:</h2>
+            <label for="present"
+              >Present
+
+              <input
+                type="radio"
+                name="attendance"
+                id="present"
+                value="true"
+                required
+              />
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="absent"
+              >Absent
+
+              <input
+                type="radio"
+                name="attendance"
+                id="absent"
+                value="false"
+                required
+              />
+            </label>
+          </div>
+          <div class="form-group">
+            <button class="btn-add-student">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
