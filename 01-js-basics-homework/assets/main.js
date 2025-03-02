@@ -20,10 +20,11 @@ btnAddStudent.addEventListener("click", function (e) {
   const attendance = document.querySelector("input[name=attendance]:checked");
   const addStudent = document.querySelector(".list");
   let html = `
-  <li>${name.value}, ${age.value}, ${
-    attendance.value == "true" ? "present" : "absent"
-  }
-  ${showAttendancePercentage(students)}
+  <li class="list-item">
+  <p>Name: ${name.value}</p>
+  <p>Age: ${age.value}</p> 
+  <p>Attendance: ${attendance.value == "true" ? "present" : "absent"}</p>
+  
   </li>`;
 
   addStudent.insertAdjacentHTML("beforeend", html);
