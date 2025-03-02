@@ -6,7 +6,58 @@ const form = document.querySelector(".collect-data");
 const btnCalcAttendance = document.querySelector(".calculate-attendance");
 btnCalcAttendance.style.display = "none";
 
-const students = [];
+const students = [
+  {
+    name: "Bombastic",
+    age: 31,
+    attendance: true,
+  },
+  {
+    name: "Iso",
+    age: 31,
+    attendance: false,
+  },
+  {
+    name: "Martin",
+    age: 31,
+    attendance: true,
+  },
+  {
+    name: "Garrix",
+    age: 32,
+    attendance: true,
+  },
+  {
+    name: "Edward",
+    age: 21,
+    attendance: false,
+  },
+  {
+    name: "Aniamls",
+    age: 31,
+    attendance: true,
+  },
+  {
+    name: "Trixie",
+    age: 31,
+    attendance: true,
+  },
+  {
+    name: "Fanny",
+    age: 31,
+    attendance: true,
+  },
+  {
+    name: "Combi",
+    age: 31,
+    attendance: true,
+  },
+  {
+    name: "Jon",
+    age: 31,
+    attendance: true,
+  },
+];
 
 function getStudent(name, age, attendance) {
   return {
@@ -41,9 +92,8 @@ function addStudentToList(e) {
   const html = `
   <tr>
     <td>${name.value}</td>
-    <td>${age.value}</td>
-    <td>${attendance.value == "true" ? "Present" : "Absent"}
-    </td>
+    <td>${age.value.replaceAll(" ", "")}</td>
+    <td>${attendance.value == "true" ? "Present" : "Absent"}</td>
   </tr>
   `;
 
@@ -69,6 +119,39 @@ function showAttendancePercentage(students) {
     return;
   }
 }
+
+function shuffleStudents(students) {
+  const team1 = [];
+  const team2 = [];
+  const team3 = [];
+  const presentStudents = students.filter((e) => e.attendance);
+  while (presentStudents.length) {
+    let random = presentStudents.splice(
+      Math.floor(Math.random() * presentStudents.length)
+    );
+    console.log(random.name);
+  }
+  // for (let i = 0; i < presentStudents.length; i++) {
+  //   let student = presentStudents.splice();
+
+  //   if (team1.includes(student.name)) {
+  //     continue;
+  //   } else {
+  //     team1[Math.floor(Math.random() * 3)] = student.name;
+  //   }
+  //   if (team1.length > 3) {
+  //     team2.push(student);
+  //   } else if (team2.length > 3) {
+  //     team3.push(student);
+  //   }
+  // }
+
+  console.log(team1);
+  console.log(team2);
+  console.log(team3);
+}
+
+shuffleStudents(students);
 
 function displayCalcPercentage() {
   return (document.querySelector(
