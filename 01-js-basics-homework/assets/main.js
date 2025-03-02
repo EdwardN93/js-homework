@@ -3,40 +3,10 @@ console.log("Working...");
 const btnOpenForm = document.querySelector(".btn-open-form");
 const btnAddStudent = document.querySelector(".btn-add-student");
 const form = document.querySelector(".collect-data");
+const btnCalcAttendance = document.querySelector(".calculate-attendance");
+btnCalcAttendance.style.display = "none";
 
 const students = [];
-
-btnOpenForm.addEventListener("click", function () {
-  //   form.classList.remove("hidden");
-  showAttendancePercentage(students);
-});
-
-btnAddStudent.addEventListener("click", function (e) {
-  e.preventDefault();
-  e.stopPropagation();
-
-  const name = document.querySelector(".name");
-  const age = document.querySelector(".age");
-  const attendance = document.querySelector("input[name=attendance]:checked");
-  const addStudent = document.querySelector(".list");
-  let html = `
-  <li class="list-item">
-  <p>Name: ${name.value}</p>
-  <p>Age: ${age.value}</p> 
-  <p>Attendance: ${attendance.value == "true" ? "present" : "absent"}</p>
-  
-  </li>`;
-
-  addStudent.insertAdjacentHTML("beforeend", html);
-
-  students.push(getStudent(name.value, age.value, attendance.value));
-
-  console.log(students);
-
-  name.value = "";
-  age.value = "";
-  html = "";
-});
 
 function getStudent(name, age, attendance) {
   return {
@@ -46,7 +16,47 @@ function getStudent(name, age, attendance) {
   };
 }
 
-// NOT WORKING YET IT'S LATE
+function addStudentToList(e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const name = document.querySelector(".name");
+  const age = document.querySelector(".age");
+  const attendance = document.querySelector("input[name=attendance]:checked");
+  const addStudent = document.querySelector(".list");
+
+  if (name.value.length <= 1 || age.value.length <= 1) {
+    document.querySelector(".errorMsg").style.display = "block";
+    document.querySelector(
+      ".inputError"
+    ).textContent = `Provide a valid name and age`;
+    return;
+  } else {
+    document.querySelector(".errorMsg").style.display = "none";
+  }
+
+  if (students.length > 0) {
+    btnCalcAttendance.style.display = "block";
+  }
+  const html = `
+  <tr>
+    <td>${name.value}</td>
+    <td>${age.value}</td>
+    <td>${attendance.value == "true" ? "Present" : "Absent"}
+    </td>
+  </tr>
+  `;
+
+  addStudent.insertAdjacentHTML("beforeend", html);
+  students.push(getStudent(name.value, age.value, attendance.value));
+
+  console.log(students);
+
+  document.querySelector(".attendance-percentage").innerText = "";
+  name.value = "";
+  age.value = "";
+}
+
 function showAttendancePercentage(students) {
   let attendance = 0;
 
@@ -59,3 +69,20 @@ function showAttendancePercentage(students) {
     return;
   }
 }
+
+function displayCalcPercentage() {
+  return (document.querySelector(
+    ".attendance-percentage"
+  ).innerText = `Presence was: ${showAttendancePercentage(students)}`);
+}
+
+function hideShowForm() {
+  form.classList.toggle("hidden");
+  btnOpenForm.textContent = `Hide form`;
+  if (form.classList.contains("hidden")) btnOpenForm.textContent = `Show form`;
+  // showAttendancePercentage(students);
+}
+
+btnOpenForm.addEventListener("click", hideShowForm);
+btnCalcAttendance.addEventListener("click", displayCalcPercentage);
+btnAddStudent.addEventListener("click", addStudentToList);

@@ -19,11 +19,44 @@
 
       <div class="students">
         <h2>Students list</h2>
-        <ul class="list"></ul>
+        <table>
+          <tbody class="list">
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Attendance</th>
+            </tr>
+          </tbody>
+          <!-- <tr>
+            <td>Edward</td>
+            <td>20</td>
+            <td>Present</td>
+          </tr>
+          <tr>
+            <td>Edward</td>
+            <td>20</td>
+            <td>Present</td>
+          </tr>
+          <tr>
+            <td>Edward</td>
+            <td>20</td>
+            <td>Present</td>
+          </tr> -->
+        </table>
+        <!-- <ul class="list"></ul> -->
+        <div>
+          <button class="calculate-attendance">Calculate Attendance</button>
+        </div>
+        <div>
+          <h2 class="attendance-percentage"></h2>
+        </div>
       </div>
 
-      <div class="collect-data">
+      <div class="collect-data hidden">
         <h2>Student's information</h2>
+        <div class="errorMsg">
+          <span class="inputError"></span>
+        </div>
         <form method="get" class="form">
           <div class="form-group">
             <input
