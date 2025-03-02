@@ -62,7 +62,7 @@ tr:not(:first-child):hover {
 }
 
 .wrapper {
-  margin-top: 5rem;
+  margin-top: 1rem;
   display: grid;
   grid-template-areas:
     ".... header ...."
@@ -133,6 +133,7 @@ li {
   justify-content: center;
   gap: 1.5rem;
   text-align: center;
+  height: fit-content;
 }
 
 button {

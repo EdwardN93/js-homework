@@ -1,62 +1,66 @@
 console.log("Working...");
 
-const btnOpenForm = document.querySelector(".btn-open-form");
+// const btnOpenForm = document.querySelector(".btn-open-form");
 const btnAddStudent = document.querySelector(".btn-add-student");
 const form = document.querySelector(".collect-data");
 const btnCalcAttendance = document.querySelector(".calculate-attendance");
+const btnShuffleTeams = document.querySelector(".btn-shuffle");
+const btnCreateTeams = document.querySelector(".noOfTeams");
+
+btnShuffleTeams.style.display = "none";
 btnCalcAttendance.style.display = "none";
 
 const students = [
-  {
-    name: "Bombastic",
-    age: 31,
-    attendance: true,
-  },
-  {
-    name: "Iso",
-    age: 31,
-    attendance: false,
-  },
-  {
-    name: "Martin",
-    age: 31,
-    attendance: true,
-  },
-  {
-    name: "Garrix",
-    age: 32,
-    attendance: true,
-  },
-  {
-    name: "Edward",
-    age: 21,
-    attendance: false,
-  },
-  {
-    name: "Aniamls",
-    age: 31,
-    attendance: true,
-  },
-  {
-    name: "Trixie",
-    age: 31,
-    attendance: true,
-  },
-  {
-    name: "Fanny",
-    age: 31,
-    attendance: true,
-  },
-  {
-    name: "Combi",
-    age: 31,
-    attendance: true,
-  },
-  {
-    name: "Jon",
-    age: 31,
-    attendance: true,
-  },
+  //   {
+  //     name: "Bombastic",
+  //     age: 31,
+  //     attendance: true,
+  //   },
+  //   {
+  //     name: "Iso",
+  //     age: 31,
+  //     attendance: false,
+  //   },
+  //   {
+  //     name: "Martin",
+  //     age: 31,
+  //     attendance: true,
+  //   },
+  //   {
+  //     name: "Garrix",
+  //     age: 32,
+  //     attendance: true,
+  //   },
+  //   {
+  //     name: "Edward",
+  //     age: 21,
+  //     attendance: false,
+  //   },
+  //   {
+  //     name: "Aniamls",
+  //     age: 31,
+  //     attendance: true,
+  //   },
+  //   {
+  //     name: "Trixie",
+  //     age: 31,
+  //     attendance: true,
+  //   },
+  //   {
+  //     name: "Fanny",
+  //     age: 31,
+  //     attendance: true,
+  //   },
+  //   {
+  //     name: "Combi",
+  //     age: 31,
+  //     attendance: true,
+  //   },
+  //   {
+  //     name: "Jon",
+  //     age: 31,
+  //     attendance: true,
+  //   },
 ];
 
 function getStudent(name, age, attendance) {
@@ -86,8 +90,9 @@ function addStudentToList(e) {
     document.querySelector(".errorMsg").style.display = "none";
   }
 
-  if (students.length > 0) {
+  if (students.length > 1) {
     btnCalcAttendance.style.display = "block";
+    // btnShuffleTeams.style.display = "block";
   }
   const html = `
   <tr>
@@ -99,8 +104,6 @@ function addStudentToList(e) {
 
   addStudent.insertAdjacentHTML("beforeend", html);
   students.push(getStudent(name.value, age.value, attendance.value));
-
-  console.log(students);
 
   document.querySelector(".attendance-percentage").innerText = "";
   name.value = "";
@@ -120,38 +123,56 @@ function showAttendancePercentage(students) {
   }
 }
 
-function shuffleStudents(students) {
-  const team1 = [];
-  const team2 = [];
-  const team3 = [];
-  const presentStudents = students.filter((e) => e.attendance);
-  while (presentStudents.length) {
-    let random = presentStudents.splice(
-      Math.floor(Math.random() * presentStudents.length)
-    );
-    console.log(random.name);
+function shuffleStudents(numTeams) {
+  let teams = new Array(numTeams).fill([]);
+  const presentStudents = students.filter((e) => e.attendance === "true");
+
+  let nameOfStudents = presentStudents.map((student) => student.name);
+
+  nameOfStudents = nameOfStudents.sort(() => Math.random() - 0.5);
+
+  const teamSize = Math.floor(nameOfStudents.length / numTeams);
+  const remainingStudents = nameOfStudents.length % numTeams;
+
+  for (let i = 0; i < numTeams; i++) {
+    const extraStudent = i < remainingStudents ? 1 : 0;
+    teams[i] = nameOfStudents.splice(0, teamSize + extraStudent);
   }
-  // for (let i = 0; i < presentStudents.length; i++) {
-  //   let student = presentStudents.splice();
 
-  //   if (team1.includes(student.name)) {
-  //     continue;
-  //   } else {
-  //     team1[Math.floor(Math.random() * 3)] = student.name;
-  //   }
-  //   if (team1.length > 3) {
-  //     team2.push(student);
-  //   } else if (team2.length > 3) {
-  //     team3.push(student);
-  //   }
-  // }
+  const noTeams = document.querySelector(".no-teams");
+  noTeams.innerHTML = "";
 
-  console.log(team1);
-  console.log(team2);
-  console.log(team3);
+  teams.forEach((team, index) => {
+    const div = document.createElement("div");
+    div.classList.add(`team-${index + 1}`);
+
+    const h2 = document.createElement("h2");
+    h2.textContent = `Team ${index + 1}`;
+    div.appendChild(h2);
+
+    const ul = document.createElement("ul");
+    div.appendChild(ul);
+
+    team.forEach((student) => {
+      const li = document.createElement("li");
+      li.textContent = student;
+      ul.appendChild(li);
+    });
+
+    noTeams.appendChild(div);
+  });
 }
 
-shuffleStudents(students);
+function displayList(list, listNr = 1) {
+  for (let i = 0; i < list.length; i++) {
+    let html = `
+    <li class="list-student">${list[i]}</li>
+    `;
+    document
+      .querySelector(`.team${listNr}`)
+      .insertAdjacentHTML("beforeend", html);
+  }
+}
 
 function displayCalcPercentage() {
   return (document.querySelector(
@@ -163,9 +184,18 @@ function hideShowForm() {
   form.classList.toggle("hidden");
   btnOpenForm.textContent = `Hide form`;
   if (form.classList.contains("hidden")) btnOpenForm.textContent = `Show form`;
-  // showAttendancePercentage(students);
 }
 
-btnOpenForm.addEventListener("click", hideShowForm);
+btnCreateTeams.addEventListener("click", function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const numTeams = document.querySelector(".numTeams");
+  shuffleStudents(numTeams.value || 3);
+  numTeams.value = "";
+});
+
+// btnOpenForm.addEventListener("click", hideShowForm);
 btnCalcAttendance.addEventListener("click", displayCalcPercentage);
 btnAddStudent.addEventListener("click", addStudentToList);
+btnShuffleTeams.addEventListener("click", shuffleStudents);

@@ -14,7 +14,7 @@
       <div class="add-student">
         <h2>Add students and distribute them in teams</h2>
 
-        <button class="btn-open-form">Add student</button>
+        <!-- <button class="btn-open-form">Add student</button> -->
       </div>
 
       <div class="students">
@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div class="collect-data hidden">
+      <div class="collect-data">
         <h2>Student's information</h2>
         <div class="errorMsg">
           <span class="inputError"></span>
@@ -97,32 +97,28 @@
         </form>
       </div>
       <div class="teams">
-        <div>
+        <form class="form">
+          <input
+            class="numTeams"
+            type="text"
+            placeholder="How many teams to create?"
+          />
+          <button class="noOfTeams">Create</button>
+        </form>
+        <div class="no-teams"></div>
+        <!-- <div>
           <h2>Team 1</h2>
-          <ul class="team1 list">
-            <li>AAndre</li>
-            <li>AAndre</li>
-            <li>AAndre</li>
-          </ul>
+          <ul class="team1 list"></ul>
         </div>
         <div>
           <h2>Team 2</h2>
-          <ul class="team2 list">
-            <li>Jacj</li>
-            <li>Jacj</li>
-            <li>Jacj</li>
-            <li>Jacj</li>
-          </ul>
+          <ul class="team2 list"></ul>
         </div>
         <div>
           <h2>Team 3</h2>
-          <ul class="team3 list">
-            <li>asdsad</li>
-            <li>asdsad</li>
-            <li>asdsad</li>
-            <li>asdsad</li>
-          </ul>
-        </div>
+          <ul class="team3 list"></ul>
+        </div> -->
+        <button class="btn-shuffle">Shuffle Teams</button>
       </div>
     </div>
   </body>
