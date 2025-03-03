@@ -1,13 +1,11 @@
 console.log("Working...");
 
-// const btnOpenForm = document.querySelector(".btn-open-form");
+// const btnOpenForm = document.querySelector(".btn-open-form"); // optional for hiding and showing form ?
 const btnAddStudent = document.querySelector(".btn-add-student");
 const form = document.querySelector(".collect-data");
 const btnCalcAttendance = document.querySelector(".calculate-attendance");
-const btnShuffleTeams = document.querySelector(".btn-shuffle");
 const btnCreateTeams = document.querySelector(".noOfTeams");
 
-btnShuffleTeams.style.display = "none";
 btnCalcAttendance.style.display = "none";
 
 const students = [
@@ -92,7 +90,6 @@ function addStudentToList(e) {
 
   if (students.length > 1) {
     btnCalcAttendance.style.display = "block";
-    // btnShuffleTeams.style.display = "block";
   }
   const html = `
   <tr>
@@ -111,21 +108,18 @@ function addStudentToList(e) {
 }
 
 function showAttendancePercentage(students) {
-  let attendance = 0;
+  const attendance = students.filter(
+    (student) => student.attendance === "true"
+  ).length;
 
-  for (let i = 0; i < students.length; i++) {
-    if (students[i].attendance === "true") attendance++;
-  }
-  if (attendance > 0) {
-    return ((attendance / students.length) * 100).toFixed() + "%";
-  } else {
-    return;
-  }
+  return ((attendance / students.length) * 100).toFixed() + "%";
 }
 
 function shuffleStudents(numTeams) {
   let teams = new Array(numTeams).fill([]);
-  const presentStudents = students.filter((e) => e.attendance === "true");
+  const presentStudents = students.filter(
+    (student) => student.attendance === "true"
+  );
 
   let nameOfStudents = presentStudents.map((student) => student.name);
 
@@ -163,39 +157,28 @@ function shuffleStudents(numTeams) {
   });
 }
 
-function displayList(list, listNr = 1) {
-  for (let i = 0; i < list.length; i++) {
-    let html = `
-    <li class="list-student">${list[i]}</li>
-    `;
-    document
-      .querySelector(`.team${listNr}`)
-      .insertAdjacentHTML("beforeend", html);
-  }
-}
-
 function displayCalcPercentage() {
   return (document.querySelector(
     ".attendance-percentage"
   ).innerText = `Presence was: ${showAttendancePercentage(students)}`);
 }
 
-function hideShowForm() {
-  form.classList.toggle("hidden");
-  btnOpenForm.textContent = `Hide form`;
-  if (form.classList.contains("hidden")) btnOpenForm.textContent = `Show form`;
-}
+// Optional for hiding and showing form?
+// function hideShowForm() {
+//   form.classList.toggle("hidden");
+//   btnOpenForm.textContent = `Hide form`;
+//   if (form.classList.contains("hidden")) btnOpenForm.textContent = `Show form`;
+// }
 
 btnCreateTeams.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
-
+  ``;
   const numTeams = document.querySelector(".numTeams");
   shuffleStudents(numTeams.value || 3);
   numTeams.value = "";
 });
 
-// btnOpenForm.addEventListener("click", hideShowForm);
+// btnOpenForm.addEventListener("click", hideShowForm); // Optional for hiding and showing form?
 btnCalcAttendance.addEventListener("click", displayCalcPercentage);
 btnAddStudent.addEventListener("click", addStudentToList);
-btnShuffleTeams.addEventListener("click", shuffleStudents);
