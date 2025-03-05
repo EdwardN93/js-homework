@@ -119,8 +119,8 @@ function showAttendancePercentage(students) {
 }
 
 function shuffleStudents(numOfTeams) {
-  let teams = new Array(numOfTeams).fill([]);
   const presentStudents = getPresentStudents();
+  document.querySelector(".no-teams").innerHTML = "";
 
   if (numOfTeams > getPresentStudents().length) {
     let teamHTML = `
@@ -128,10 +128,14 @@ function shuffleStudents(numOfTeams) {
     <p>Max number of teams you can create: ${getPresentStudents().length}</p>
   </div>
   `;
-    noTeams.insertAdjacentHTML("beforeend", teamHTML);
+    document
+      .querySelector(".no-teams")
+      .insertAdjacentHTML("beforeend", teamHTML);
 
     return;
   }
+
+  let teams = new Array(numOfTeams).fill([]);
 
   let nameOfStudents = presentStudents.map((student) => student.name);
 
@@ -145,9 +149,6 @@ function shuffleStudents(numOfTeams) {
     teams[i] = nameOfStudents.splice(0, teamSize + extraStudent);
   }
 
-  const noTeams = document.querySelector(".no-teams");
-  noTeams.innerHTML = "";
-
   teams.forEach((team, index) => {
     console.log(team, index);
     const teamIndex = index + 1;
@@ -160,7 +161,9 @@ function shuffleStudents(numOfTeams) {
       </div>
       `;
 
-    noTeams.insertAdjacentHTML("beforeend", teamHTML);
+    document
+      .querySelector(".no-teams")
+      .insertAdjacentHTML("beforeend", teamHTML);
   });
 }
 
