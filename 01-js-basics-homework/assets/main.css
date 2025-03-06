@@ -34,7 +34,7 @@ input[type="numeric"]:focus {
 
 table {
   width: 90%;
-  margin-top: 2rem;
+  margin-top: 1rem;
   border-collapse: collapse;
   text-align: center;
 }
@@ -125,6 +125,14 @@ li {
   gap: 0.625rem;
 }
 
+.form-teams {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+  width: 50%;
+}
+
 .teams {
   grid-area: teams;
   display: flex;
@@ -134,6 +142,7 @@ li {
   gap: 1.5rem;
   text-align: center;
   height: fit-content;
+  width: 100%;
 }
 
 button {
@@ -144,7 +153,7 @@ button {
   background: #fff;
   align-self: center;
   border-radius: 10px;
-  transition: 0.3s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 button:hover {

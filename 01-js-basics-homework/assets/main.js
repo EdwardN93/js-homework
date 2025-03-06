@@ -5,61 +5,21 @@ const btnAddStudent = document.querySelector(".btn-add-student");
 const form = document.querySelector(".collect-data");
 const btnCalcAttendance = document.querySelector(".calculate-attendance");
 const btnCreateTeams = document.querySelector(".noOfTeams");
+const addStudent = document.querySelector(".list");
+const studentFormData = document.querySelector(".form");
+
+const attendancePercentageUi = document.querySelector(".attendance-percentage");
+const displayPercentageUi = document.querySelector(".attendance-percentage");
+
+const teamsUi = document.querySelector(".no-teams");
+const numTeams = document.querySelector(".numTeams");
+
+const errorMsgDiv = document.querySelector(".errorMsg");
+const inputErrorMsg = document.querySelector(".inputError");
 
 btnCalcAttendance.style.display = "none";
 
-const students = [
-  // {
-  //   name: "Bombastic",
-  //   age: 31,
-  //   attendance: true,
-  // },
-  // {
-  //   name: "Iso",
-  //   age: 31,
-  //   attendance: false,
-  // },
-  // {
-  //   name: "Martin",
-  //   age: 31,
-  //   attendance: true,
-  // },
-  // {
-  //   name: "Garrix",
-  //   age: 32,
-  //   attendance: true,
-  // },
-  // {
-  //   name: "Edward",
-  //   age: 21,
-  //   attendance: false,
-  // },
-  // {
-  //   name: "Aniamls",
-  //   age: 31,
-  //   attendance: true,
-  // },
-  // {
-  //   name: "Trixie",
-  //   age: 31,
-  //   attendance: true,
-  // },
-  // {
-  //   name: "Fanny",
-  //   age: 31,
-  //   attendance: true,
-  // },
-  // {
-  //   name: "Combi",
-  //   age: 31,
-  //   attendance: true,
-  // },
-  // {
-  //   name: "Jon",
-  //   age: 31,
-  //   attendance: true,
-  // },
-];
+const students = [];
 
 const getStudent = (name, age, attendance) => {
   return { name, age, attendance };
@@ -72,21 +32,19 @@ const addStudentToList = (e) => {
   const name = document.querySelector(".name");
   const age = document.querySelector(".age");
   const attendance = document.querySelector("input[name=attendance]:checked");
-  const addStudent = document.querySelector(".list");
 
   if (name.value.length <= 1 || age.value.length <= 1) {
-    document.querySelector(".errorMsg").style.display = "block";
-    document.querySelector(
-      ".inputError"
-    ).textContent = `Provide a valid name and age`;
+    errorMsgDiv.style.display = "block";
+    inputErrorMsg.textContent = `Provide a valid name and age`;
+
     return;
   } else if (!attendance) {
-    document.querySelector(".errorMsg").style.display = "block";
-    document.querySelector(".inputError").textContent =
-      "Please select attendance";
+    errorMsgDiv.style.display = "block";
+    inputErrorMsg.textContent = "Please select attendance";
+
     return;
   } else {
-    document.querySelector(".errorMsg").style.display = "none";
+    errorMsgDiv.style.display = "none";
   }
 
   if (students.length > 1) {
@@ -103,9 +61,8 @@ const addStudentToList = (e) => {
   addStudent.insertAdjacentHTML("beforeend", html);
   students.push(getStudent(name.value, age.value, attendance.value));
 
-  document.querySelector(".attendance-percentage").innerText = "";
-  name.value = "";
-  age.value = "";
+  studentFormData.reset();
+  attendancePercentageUi.innerText = "";
 };
 
 const getPresentStudents = () => {
@@ -118,9 +75,9 @@ const showAttendancePercentage = (students) => {
   return ((attendance / students.length) * 100).toFixed() + "%";
 };
 
-const shuffleStudents = (numOfTeams) => {
+const createTeams = (numOfTeams) => {
   const presentStudents = getPresentStudents();
-  document.querySelector(".no-teams").innerHTML = "";
+  teamsUi.innerHTML = "";
 
   if (numOfTeams > getPresentStudents().length) {
     let teamHTML = `
@@ -128,10 +85,16 @@ const shuffleStudents = (numOfTeams) => {
     <p>Max number of teams you can create: ${getPresentStudents().length}</p>
   </div>
   `;
-    document
-      .querySelector(".no-teams")
-      .insertAdjacentHTML("beforeend", teamHTML);
+    teamsUi.insertAdjacentHTML("beforeend", teamHTML);
 
+    return;
+  } else if (numOfTeams == 0 || numOfTeams < 0) {
+    let teamHTML = `
+  <div class='error'>
+    <p>Not an option. Add students and provide a positive value</p>
+  </div>
+  `;
+    teamsUi.insertAdjacentHTML("beforeend", teamHTML);
     return;
   }
 
@@ -160,16 +123,14 @@ const shuffleStudents = (numOfTeams) => {
       </div>
       `;
 
-    document
-      .querySelector(".no-teams")
-      .insertAdjacentHTML("beforeend", teamHTML);
+    teamsUi.insertAdjacentHTML("beforeend", teamHTML);
   });
 };
 
 const displayCalcPercentage = () => {
-  document.querySelector(
-    ".attendance-percentage"
-  ).innerText = `Presence was: ${showAttendancePercentage(students)}`;
+  displayPercentageUi.innerText = `Class attendance: ${showAttendancePercentage(
+    students
+  )}`;
 };
 
 // Optional for hiding and showing form?
@@ -183,9 +144,8 @@ btnCreateTeams.addEventListener("click", (e) => {
   e.preventDefault();
   e.stopPropagation();
 
-  const numTeams = document.querySelector(".numTeams");
-  shuffleStudents(numTeams.value || 1);
-  numTeams.value = "";
+  createTeams(numTeams.value || 1);
+  // numTeams.value = "";
 });
 
 // btnOpenForm.addEventListener("click", hideShowForm); // Optional for hiding and showing form?
