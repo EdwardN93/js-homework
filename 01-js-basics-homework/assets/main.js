@@ -61,11 +61,11 @@ const students = [
   // },
 ];
 
-function getStudent(name, age, attendance) {
+const getStudent = (name, age, attendance) => {
   return { name, age, attendance };
-}
+};
 
-function addStudentToList(e) {
+const addStudentToList = (e) => {
   e.preventDefault();
   e.stopPropagation();
 
@@ -106,19 +106,19 @@ function addStudentToList(e) {
   document.querySelector(".attendance-percentage").innerText = "";
   name.value = "";
   age.value = "";
-}
+};
 
-function getPresentStudents() {
+const getPresentStudents = () => {
   return students.filter((student) => student.attendance === "true");
-}
+};
 
-function showAttendancePercentage(students) {
+const showAttendancePercentage = (students) => {
   const attendance = getPresentStudents().length;
 
   return ((attendance / students.length) * 100).toFixed() + "%";
-}
+};
 
-function shuffleStudents(numOfTeams) {
+const shuffleStudents = (numOfTeams) => {
   const presentStudents = getPresentStudents();
   document.querySelector(".no-teams").innerHTML = "";
 
@@ -150,7 +150,6 @@ function shuffleStudents(numOfTeams) {
   }
 
   teams.forEach((team, index) => {
-    console.log(team, index);
     const teamIndex = index + 1;
     let teamHTML = `
       <div class="team-${teamIndex}">
@@ -165,13 +164,13 @@ function shuffleStudents(numOfTeams) {
       .querySelector(".no-teams")
       .insertAdjacentHTML("beforeend", teamHTML);
   });
-}
+};
 
-function displayCalcPercentage() {
+const displayCalcPercentage = () => {
   document.querySelector(
     ".attendance-percentage"
   ).innerText = `Presence was: ${showAttendancePercentage(students)}`;
-}
+};
 
 // Optional for hiding and showing form?
 // function hideShowForm() {
@@ -180,7 +179,7 @@ function displayCalcPercentage() {
 //   if (form.classList.contains("hidden")) btnOpenForm.textContent = `Show form`;
 // }
 
-btnCreateTeams.addEventListener("click", function (e) {
+btnCreateTeams.addEventListener("click", (e) => {
   e.preventDefault();
   e.stopPropagation();
 
