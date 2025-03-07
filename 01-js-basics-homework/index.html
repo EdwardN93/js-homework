@@ -62,32 +62,26 @@
             />
           </div>
 
-          <div class="form-group">
-            <h2 class="secondary">Student was:</h2>
-            <label for="present"
-              >Present
-
-              <input
-                type="radio"
-                name="attendance"
-                id="present"
-                value="true"
-                required
-              />
-            </label>
-          </div>
-          <div class="form-group">
-            <label for="absent"
-              >Absent
-
-              <input
-                type="radio"
-                name="attendance"
-                id="absent"
-                value="false"
-                required
-              />
-            </label>
+          <h2 class="secondary">Student was:</h2>
+          <div class="form-group-attendance">
+            <input
+              type="radio"
+              name="attendance"
+              id="present"
+              value="true"
+              required
+            />
+            <label class="radio-label" for="present">Present </label>
+            <!-- <button class="btn-absent" value="true">Absent</button>
+            <button class="btn-present" value="false">Present</button> -->
+            <input
+              type="radio"
+              name="attendance"
+              id="absent"
+              value="false"
+              required
+            />
+            <label class="radio-label" for="absent">Absent </label>
           </div>
           <div class="form-group">
             <button class="btn-add-student">Confirm</button>

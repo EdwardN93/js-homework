@@ -58,7 +58,38 @@ input[type="numeric"]:focus {
 }
 
 input[type="radio"] {
-  transform: scale(1.2);
+  /* transform: scale(1.2); */
+  display: none;
+}
+.radio-label {
+  position: relative;
+  border: 2px solid var(--clr-secondary);
+  padding: 10px 30px;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.radio-label::before {
+  /* position: absolute; */
+  margin-left: 0;
+  content: "";
+  height: 12px;
+  width: 12px;
+  border: 1px solid var(--clr-primary);
+  border-radius: 50%;
+  transition: border-color 0.5s ease;
+}
+input[type="radio"]:checked + label {
+  background-color: var(--clr-secondary);
+  color: white;
+  transition: all 0.3s ease;
+  flex-grow: 0;
+}
+input[type="radio"]:checked + label::before {
+  height: 12px;
+  width: 12px;
+  border: 3px solid white;
 }
 
 #teams {
@@ -188,6 +219,11 @@ li {
   justify-content: center;
   flex-direction: column;
   gap: 0.625rem;
+}
+
+.form-group-attendance {
+  display: flex;
+  gap: 0;
 }
 
 .form-teams {
