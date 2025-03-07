@@ -50,23 +50,32 @@ const addStudentToList = (e) => {
   if (students.length > 1) {
     btnCalcAttendance.style.display = "block";
   }
+
   const html = `
-  <tr>
+  <tr class="${getAttendanceDetails(attendance).class}">
     <td>${name.value}</td>
     <td>${age.value.replaceAll(" ", "")}</td>
-    <td>${attendance.value == "true" ? "Present" : "Absent"}</td>
+    <td>${getAttendanceDetails(attendance).status}</td>
   </tr>
   `;
 
   addStudent.insertAdjacentHTML("beforeend", html);
-  students.push(getStudent(name.value, age.value, attendance.value));
+  students.push(
+    getStudent(name.value, age.value, getAttendanceDetails(attendance).bool)
+  );
 
   studentFormData.reset();
   attendancePercentageUi.innerText = "";
 };
 
+const getAttendanceDetails = (attendance) => {
+  return attendance.value === "true"
+    ? { status: "Present", class: "green", bool: true }
+    : { status: "Absent", class: "red", bool: false };
+};
+
 const getPresentStudents = () => {
-  return students.filter((student) => student.attendance === "true");
+  return students.filter((student) => student.attendance);
 };
 
 const showAttendancePercentage = (students) => {
