@@ -11,14 +11,12 @@
     <!-- <h2>JS Basics Homework</h2> -->
 
     <div class="wrapper">
-      <div class="add-student">
-        <h2>Add students and distribute them in teams</h2>
-
-        <!-- <button class="btn-open-form">Add student</button> -->
+      <div class="add-student primary">
+        <h2 class="">Add students and distribute them in teams</h2>
       </div>
 
       <div class="students">
-        <h2>Students list</h2>
+        <h2 class="primary">Students list</h2>
         <table>
           <tbody class="list">
             <tr>
@@ -28,17 +26,17 @@
             </tr>
           </tbody>
         </table>
-        <!-- <ul class="list"></ul> -->
+
         <div>
           <button class="calculate-attendance">Calculate Attendance</button>
         </div>
         <div>
-          <h2 class="attendance-percentage"></h2>
+          <h2 class="attendance-percentage secondary"></h2>
         </div>
       </div>
 
       <div class="collect-data">
-        <h2>Student's information</h2>
+        <h2 class="primary">Student's information</h2>
         <div class="errorMsg">
           <span class="inputError"></span>
         </div>
@@ -65,7 +63,7 @@
           </div>
 
           <div class="form-group">
-            <h2>Student was:</h2>
+            <h2 class="secondary">Student was:</h2>
             <label for="present"
               >Present
 
@@ -97,14 +95,15 @@
         </form>
       </div>
       <div class="teams">
-        <h2>Create Teams</h2>
+        <h2 class="primary">Create and shuffle Teams</h2>
+        <div class="information">
+          <p>Select how many teams to create.</p>
+          <p>Default is set to 1 if unselected.</p>
+        </div>
         <form class="form-teams">
-          <input
-            class="numTeams"
-            type="numeric"
-            max="5"
-            placeholder="How many teams to create?"
-          />
+          <select name="teams" id="teams" class="secondary">
+            <option value="" selected disabled>How many teams?</option>
+          </select>
           <button class="noOfTeams">Create</button>
         </form>
         <div class="no-teams"></div>

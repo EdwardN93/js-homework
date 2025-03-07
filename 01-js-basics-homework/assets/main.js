@@ -1,6 +1,5 @@
 console.log("Working...");
 
-// const btnOpenForm = document.querySelector(".btn-open-form"); // optional for hiding and showing form ?
 const btnAddStudent = document.querySelector(".btn-add-student");
 const form = document.querySelector(".collect-data");
 const btnCalcAttendance = document.querySelector(".calculate-attendance");
@@ -13,6 +12,7 @@ const displayPercentageUi = document.querySelector(".attendance-percentage");
 
 const teamsUi = document.querySelector(".no-teams");
 const numTeams = document.querySelector(".numTeams");
+const selectTeams = document.querySelector("#teams");
 
 const errorMsgDiv = document.querySelector(".errorMsg");
 const inputErrorMsg = document.querySelector(".inputError");
@@ -65,7 +65,21 @@ const addStudentToList = (e) => {
   );
 
   studentFormData.reset();
+  addNumberOfTeams();
   attendancePercentageUi.innerText = "";
+};
+
+const addNumberOfTeams = () => {
+  selectTeams.innerHTML = `<option value="" selected disabled>How many teams?</option>`;
+  let html;
+  const presentStudents = getPresentStudents().map((student) => student);
+
+  for (let i = 1; i <= presentStudents.length; i++) {
+    html = `
+    <option value=${i}>${i} ${i == "1" ? "Team" : "Teams"}</option>
+    `;
+    selectTeams.insertAdjacentHTML("beforeend", html);
+  }
 };
 
 const getAttendanceDetails = (attendance) => {
@@ -88,25 +102,6 @@ const createTeams = (numOfTeams) => {
   const presentStudents = getPresentStudents();
   teamsUi.innerHTML = "";
 
-  if (numOfTeams > getPresentStudents().length) {
-    let teamHTML = `
-  <div class='error'>
-    <p>Max number of teams you can create: ${getPresentStudents().length}</p>
-  </div>
-  `;
-    teamsUi.insertAdjacentHTML("beforeend", teamHTML);
-
-    return;
-  } else if (numOfTeams == 0 || numOfTeams < 0) {
-    let teamHTML = `
-  <div class='error'>
-    <p>Not an option. Add students and provide a positive value</p>
-  </div>
-  `;
-    teamsUi.insertAdjacentHTML("beforeend", teamHTML);
-    return;
-  }
-
   let teams = new Array(numOfTeams).fill([]);
 
   let nameOfStudents = presentStudents.map((student) => student.name);
@@ -125,7 +120,7 @@ const createTeams = (numOfTeams) => {
     const teamIndex = index + 1;
     let teamHTML = `
       <div class="team-${teamIndex}">
-      <h2>Team ${teamIndex}</h2>
+      <h2 class="secondary">Team ${teamIndex}</h2>
       <ul>
       ${team.map((student) => `<li>${student}</li>`).join("")}
       </ul>
@@ -142,21 +137,12 @@ const displayCalcPercentage = () => {
   )}`;
 };
 
-// Optional for hiding and showing form?
-// function hideShowForm() {
-//   form.classList.toggle("hidden");
-//   btnOpenForm.textContent = `Hide form`;
-//   if (form.classList.contains("hidden")) btnOpenForm.textContent = `Show form`;
-// }
-
 btnCreateTeams.addEventListener("click", (e) => {
   e.preventDefault();
   e.stopPropagation();
 
-  createTeams(numTeams.value || 1);
-  // numTeams.value = "";
+  createTeams(selectTeams.value || 1);
 });
 
-// btnOpenForm.addEventListener("click", hideShowForm); // Optional for hiding and showing form?
 btnCalcAttendance.addEventListener("click", displayCalcPercentage);
 btnAddStudent.addEventListener("click", addStudentToList);
