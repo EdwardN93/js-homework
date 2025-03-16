@@ -70,7 +70,7 @@ const resetPickedStudent = () => {
   btnClearList.disabled = true;
 };
 
-// event handlers
+// EVENT HANDLERS
 
 btnAddStudent.addEventListener("click", getStudentName);
 
