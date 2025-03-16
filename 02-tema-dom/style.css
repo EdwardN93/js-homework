@@ -5,3 +5,14 @@ input[type="color"] {
 #student-list img {
   height: 2rem;
 }
+
+.name-list {
+  align-items: center;
+}
+.student-color {
+  margin-left: 10px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}

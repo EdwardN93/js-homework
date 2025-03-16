@@ -1,15 +1,10 @@
-/**
- * To do
- * get names from input
- * change random color as default when reload page
- *
- */
-
-const studentName = document.querySelector("#student-name");
+const studentNameInput = document.querySelector("#student-name");
 const studentColor = document.querySelector("#student-color");
 
 // BUTTONS RERERENCE
 const btnAddStudent = document.querySelector("#add-student-btn");
+const btnClearList = document.querySelector(".btn-clear-list");
+const btnPickStudent = document.querySelector("#pick-student-btn");
 
 // FUNCTIONS
 
@@ -23,34 +18,87 @@ const randomStudentColor = () => {
   return color;
 };
 
-const getStudentName = () => {
+studentColor.value = randomStudentColor();
+btnClearList.disabled = true;
+
+const getStudentName = (e) => {
+  e.preventDefault();
+  const studentName = studentNameInput.value.trim();
+  if (studentName.length < 1) return alert("Provide a valid name");
+  btnClearList.disabled = false;
   const html = `
     <tr>
-        <td>
+        <td class='name-list'>
             <img
-                src="https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${studentName.value}
+                src="https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${studentName}
                 alt="avatar"
-                class="img-thumbnail me-2"
-            />
-                    ${studentName.value}
-        </td>
+                class="img-thumbnail me-2"      
+            />${studentName}<div class='student-color'></div></td>
         <td class="text-end">
-            <button class="btn btn-outline-secondary btn-sm">
+            <button class="delete-btn btn btn-outline-secondary btn-sm">
                 delete
             </button>
         </td>
     </tr>
   `;
-  document.querySelector("#student-list").insertAdjacentHTML("beforeend", html);
-  studentColor.value = randomStudentColor();
+  const tbody = document.querySelector("tbody");
+  tbody.insertAdjacentHTML("beforeend", html);
 
-  //   document.querySelector(".btn").addEventListener("click", (e) => {
-  //     console.log(e.target);
-  //     console.log("anything");
-  //   });
+  const newImage = document.querySelector("tbody tr:last-child .img-thumbnail");
+  newImage.style.borderColor = `${studentColor.value}`;
+  const newColor = document.querySelector("tbody tr:last-child .student-color");
+  newColor.style.backgroundColor = `${studentColor.value}`;
+
+  studentColor.value = randomStudentColor();
+  studentNameInput.value = "";
 };
 
-btnAddStudent.addEventListener("click", (e) => {
-  e.preventDefault();
-  getStudentName();
+const checkStudentsList = () => {
+  if (document.querySelectorAll(".name-list").length === 0) {
+    resetPickedStudent();
+  }
+};
+
+const resetPickedStudent = () => {
+  document.querySelector(
+    "#picked-student-div"
+  ).innerText = `Press the Button to pick a student`;
+
+  document.querySelector(".img-thumbnail").style.border = `1px solid #dee2e6`;
+  const defaultAvatar = `https://upload.wikimedia.org/wikipedia/commons/5/59/User-avatar.svg`;
+  document.querySelector("#picked-student-img").src = defaultAvatar;
+};
+
+// event handlers
+
+btnAddStudent.addEventListener("click", getStudentName);
+
+document.querySelector("tbody").addEventListener("click", (e) => {
+  if (e.target && e.target.classList.contains("delete-btn")) {
+    const row = e.target.closest("tr");
+    row.remove();
+    checkStudentsList();
+  }
+});
+
+btnPickStudent.addEventListener("click", () => {
+  const students = document.querySelectorAll(".name-list");
+
+  if (students.length === 0) return alert("No students to pick");
+
+  const randomStudent = students[Math.floor(Math.random() * students.length)];
+  const randomStudentImg = randomStudent.querySelector("img");
+
+  document.querySelector("#picked-student-div").innerText =
+    randomStudent.innerText;
+  document.querySelector(
+    ".img-thumbnail"
+  ).style.border = `5px solid ${randomStudentImg.style.borderColor}`;
+  document.querySelector("#picked-student-img").src = randomStudentImg.src;
+});
+
+btnClearList.addEventListener("click", (e) => {
+  document.querySelector("tbody").innerHTML = "";
+  e.target.disabled = true;
+  resetPickedStudent();
 });
