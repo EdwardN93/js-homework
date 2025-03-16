@@ -67,6 +67,7 @@ const resetPickedStudent = () => {
   document.querySelector(".img-thumbnail").style.border = `1px solid #dee2e6`;
   const defaultAvatar = `https://upload.wikimedia.org/wikipedia/commons/5/59/User-avatar.svg`;
   document.querySelector("#picked-student-img").src = defaultAvatar;
+  btnClearList.disabled = true;
 };
 
 // event handlers
