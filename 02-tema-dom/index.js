@@ -14,7 +14,6 @@ const randomStudentColor = () => {
   for (let i = 0; i < 6; i++) {
     color += specter[Math.floor(Math.random() * specter.length)];
   }
-  console.log(color);
   return color;
 };
 
