@@ -35,7 +35,9 @@ const getStudentName = (e) => {
   btnClearList.disabled = false;
   const row = document.createElement("tr");
   row.innerHTML = `
-        <td class='name-list' data-student-name="${studentName}">
+        <td class='name-list' data-student-name="${encodeURIComponent(
+          studentName
+        )}">
             <img
                 data-border-clr="${studentColor.value}"
                 src="https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${studentName}
@@ -98,17 +100,18 @@ btnAddStudent.addEventListener("click", getStudentName);
 
 btnPickStudent.addEventListener("click", () => {
   const students = tbody.querySelectorAll(".name-list");
+  const studentsLength = students.length;
 
-  if (students.length === 0) return alert("No students to pick");
+  if (studentsLength === 0) return alert("No students to pick");
 
-  const randomStudent = students[Math.floor(Math.random() * students.length)];
-  const randomStudentImg = randomStudent.querySelector("img");
-  const randomStudentsName = randomStudent.dataset.studentName;
+  const randomStudent = students[Math.floor(Math.random() * studentsLength)];
+  const studentImg = randomStudent.querySelector("img");
+  const studentName = randomStudent.dataset.studentName;
 
   changeDetails(
-    randomStudentsName,
-    `5px solid ${randomStudentImg.dataset.borderClr}`,
-    randomStudentImg.src
+    studentName,
+    `5px solid ${studentImg.dataset.borderClr}`,
+    studentImg.src
   );
 });
 
