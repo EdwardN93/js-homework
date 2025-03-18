@@ -35,7 +35,6 @@ const getStudentName = (e) => {
   btnClearList.disabled = false;
   const row = document.createElement("tr");
   row.innerHTML = `
-    <tr>
         <td class='name-list' data-student-name="${studentName}">
             <img
                 data-border-clr="${studentColor.value}"
@@ -48,7 +47,6 @@ const getStudentName = (e) => {
                 delete
             </button>
         </td>
-    </tr>
   `;
   tbody.appendChild(row);
 
