@@ -33,17 +33,32 @@ const getStudentName = (e) => {
   if (studentName.length < 1) return alert("Provide a valid name");
 
   btnClearList.disabled = false;
+
+  const student = {
+    name: studentName,
+    color: studentColor.value,
+  };
+
+  appendStudentToDOM(student);
+  addToStorage(student);
+  studentColor.value = randomStudentColor();
+  studentNameInput.value = "";
+};
+
+const appendStudentToDOM = (student) => {
   const row = document.createElement("tr");
   row.innerHTML = `
         <td class='name-list' data-student-name="${encodeURIComponent(
-          studentName
+          student.name
         )}">
             <img
-                data-border-clr="${studentColor.value}"
-                src="https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${studentName}
+                data-border-clr="${student.color}"
+                src="https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${
+                  student.name
+                }"
                 alt="avatar"
                 class="img-thumbnail me-2"      
-            />${studentName}<div class='student-color'></div></td>
+            />${student.name}<div class='student-color'></div></td>
         <td class="text-end">
             <button class="delete-btn btn btn-outline-secondary btn-sm">
                 delete
@@ -52,16 +67,14 @@ const getStudentName = (e) => {
   `;
   tbody.appendChild(row);
 
-  studentsColor(row, studentColor.value);
+  studentsColor(row, student.color);
 
   const deleteBtn = row.querySelector(".delete-btn");
   deleteBtn.addEventListener("click", () => {
+    deleteFromStorage(row.querySelector(".name-list").dataset.studentName);
     row.remove();
     checkStudentsList();
   });
-
-  studentColor.value = randomStudentColor();
-  studentNameInput.value = "";
 };
 
 const studentsColor = (row, color) => {
@@ -94,6 +107,33 @@ const changeDetails = (
   pickedStudentImg.src = source;
 };
 
+function addToStorage(student) {
+  const fakeDb = JSON.parse(localStorage.getItem("students")) || [];
+  fakeDb.push(student);
+  localStorage.setItem("students", JSON.stringify(fakeDb));
+}
+
+function deleteFromStorage(name) {
+  const fakeDb = JSON.parse(localStorage.getItem("students")) || [];
+  const index = fakeDb.findIndex(
+    (student) => student.name === decodeURIComponent(name)
+  );
+
+  if (index !== -1) {
+    fakeDb.splice(index, 1);
+    localStorage.setItem("students", JSON.stringify(fakeDb));
+  }
+}
+
+function loadStudentsFromStorage() {
+  const fakeDb = JSON.parse(localStorage.getItem("students")) || [];
+  fakeDb.forEach((student) => appendStudentToDOM(student));
+
+  if (fakeDb.length > 0) {
+    btnClearList.disabled = false;
+  }
+}
+
 // EVENT HANDLERS
 
 btnAddStudent.addEventListener("click", getStudentName);
@@ -117,6 +157,9 @@ btnPickStudent.addEventListener("click", () => {
 
 btnClearList.addEventListener("click", (e) => {
   tbody.innerHTML = "";
+  localStorage.removeItem("students");
   e.target.disabled = true;
   resetPickedStudent();
 });
+
+loadStudentsFromStorage();
