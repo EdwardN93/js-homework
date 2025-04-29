@@ -1,70 +1,59 @@
 const API_KEY = `kT9nWX/DQJB8hw5UyjGGYg==wEbNP4vTGxttHScM`;
-const btnVoteForMcLaren = document.querySelector("#mclaren");
-const btnVoteForMercedes = document.querySelector("#mercedes");
-const btnVoteForFerrari = document.querySelector("#ferrari");
-const btnVoteForLamborghini = document.querySelector("#lamborghini");
 
-const buttons = [
-  btnVoteForFerrari,
-  btnVoteForMercedes,
-  btnVoteForMcLaren,
-  btnVoteForLamborghini,
-];
-
-buttons.forEach((button) => {
-  button.disabled = true;
-});
-
-const options = {
-  method: "GET",
-  headers: {
-    "X-Api-Key": API_KEY,
-    "Content-type": "application/json",
-  },
-};
-
-const getVotes = async (id) => {
-  const url = `https://api.api-ninjas.com/v1/counter?id=${id}`;
-  try {
-    const response = await fetch(url, options);
-    if (!response.ok) throw new Error(`Status: ${response.status}`);
-    const data = await response.json();
-    document.querySelector(`.${id}-vote`).textContent = data.value;
-  } catch (error) {
-    console.error(error);
-  } finally {
-    buttons.forEach((button) => {
-      button.disabled = false;
-    });
+class CarVote {
+  constructor(carId, apiKey) {
+    this.carId = carId;
+    this.apiKey = apiKey;
+    this.button = document.querySelector(`#${carId}`);
+    this.display = document.querySelector(`.${carId}-vote`);
+    this.button.addEventListener("click", () => this.vote());
   }
-};
 
-const vote = async (event) => {
-  const id = event.target.id;
-  event.target.disabled = true;
-
-  const url = `https://api.api-ninjas.com/v1/counter?id=${id}&hit=true`;
-
-  try {
-    const response = await fetch(url, options);
-    if (!response.ok) throw new Error(`Status: ${response.status}`);
-    const data = await response.json();
-    console.log(data);
-
-    await getVotes(id);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    event.target.disabled = false;
+  get options() {
+    return {
+      method: "GET",
+      headers: {
+        "X-Api-Key": this.apiKey,
+        "Content-type": "application/json",
+      },
+    };
   }
-};
 
-btnVoteForMcLaren.addEventListener("click", vote);
-btnVoteForMercedes.addEventListener("click", vote);
-btnVoteForFerrari.addEventListener("click", vote);
-btnVoteForLamborghini.addEventListener("click", vote);
+  async fetchVotes() {
+    const url = `https://api.api-ninjas.com/v1/counter?id=${this.carId}`;
+    console.log(this.carId);
+    try {
+      const response = await fetch(url, this.options);
+      const data = await response.json();
+      console.log(data);
+      this.display.textContent = data.value;
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
-getVotes("mclaren");
-getVotes("mercedes");
-getVotes("ferrari");
-getVotes("lamborghini");
+  async vote() {
+    this.button.disabled = true;
+    const url = `https://api.api-ninjas.com/v1/counter?id=${this.carId}&hit=true`;
+    try {
+      const response = await fetch(url, this.options);
+      const data = await response.json();
+      console.log(`Voted for ${this.carId}:`, data);
+      await this.fetchVotes();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.button.disabled = false;
+    }
+  }
+}
+
+const mcLarenVote = new CarVote("mclaren", API_KEY);
+const mercedesVote = new CarVote("mercedes", API_KEY);
+const ferrariVote = new CarVote("ferrari", API_KEY);
+const lamborghiniVote = new CarVote("lamborghini", API_KEY);
+
+mcLarenVote.fetchVotes();
+mercedesVote.fetchVotes();
+ferrariVote.fetchVotes();
+lamborghiniVote.fetchVotes();
