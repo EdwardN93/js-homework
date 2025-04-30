@@ -20,6 +20,7 @@ class CarVote {
   }
 
   async fetchVotes() {
+    this.button.disabled = true;
     const url = `https://api.api-ninjas.com/v1/counter?id=${this.carId}`;
     console.log(this.carId);
     try {
@@ -27,6 +28,7 @@ class CarVote {
       const data = await response.json();
       console.log(data);
       this.display.textContent = data.value;
+      this.button.disabled = false;
     } catch (err) {
       console.error(err);
     }
@@ -48,12 +50,12 @@ class CarVote {
   }
 }
 
-const mcLarenVote = new CarVote("mclaren", API_KEY);
-const mercedesVote = new CarVote("mercedes", API_KEY);
-const ferrariVote = new CarVote("ferrari", API_KEY);
-const lamborghiniVote = new CarVote("lamborghini", API_KEY);
+const cars = ["mclaren", "mercedes", "ferrari", "lamborghini"];
+cars.forEach((carId) => {
+  const render = new RenderHtml({ carId });
+  render.html();
+});
 
-mcLarenVote.fetchVotes();
-mercedesVote.fetchVotes();
-ferrariVote.fetchVotes();
-lamborghiniVote.fetchVotes();
+const carVotes = cars.map((carId) => new CarVote(carId, API_KEY));
+
+carVotes.forEach((cv) => cv.fetchVotes());
