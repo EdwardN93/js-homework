@@ -2,9 +2,12 @@ const API_KEY = `kT9nWX/DQJB8hw5UyjGGYg==wEbNP4vTGxttHScM`;
 
 class CarVote {
   constructor(carId, apiKey) {
-    this.carId = carId;
+    this.carId = carId.toLowerCase();
+    this.carNameDisplay = carId;
     this.apiKey = apiKey;
-    this.button = document.querySelector(`#${carId}`);
+    // console.log(this.carId);
+    console.log(this.carNameDisplay);
+    this.button = document.querySelector(`#${carId.toLowerCase()}`);
     this.display = document.querySelector(`.${carId}-vote`);
     this.button.addEventListener("click", () => this.vote());
   }
@@ -20,41 +23,48 @@ class CarVote {
   }
 
   async fetchVotes() {
-    this.button.disabled = true;
+    this.setLoading(true);
     const url = `https://api.api-ninjas.com/v1/counter?id=${this.carId}`;
     try {
       const response = await fetch(url, this.options);
       const data = await response.json();
-      console.log(data);
-      this.display.textContent = data.value;
-      this.button.disabled = false;
+      this.display.textContent = `${data.value} votes`;
     } catch (err) {
       console.error(err);
+    } finally {
+      this.setLoading(false);
     }
   }
 
   async vote() {
-    this.button.disabled = true;
+    this.setLoading(true);
     const url = `https://api.api-ninjas.com/v1/counter?id=${this.carId}&hit=true`;
     try {
       const response = await fetch(url, this.options);
       const data = await response.json();
-      console.log(`Voted for ${this.carId}:`, data);
       await this.fetchVotes();
     } catch (err) {
       console.error(err);
     } finally {
-      this.button.disabled = false;
+      this.setLoading(false);
     }
+  }
+
+  setLoading(isLoading) {
+    this.button.disabled = isLoading;
+    this.button.textContent = isLoading
+      ? "Loading..."
+      : `Vote ${this.carNameDisplay}`;
   }
 }
 
-const cars = ["mclaren", "mercedes", "ferrari", "lamborghini"];
+const cars = ["McLaren", "Mercedes", "Ferrari", "Lamborghini"];
+
 cars.forEach((carId) => {
-  const render = new RenderHtml(carId);
-  render.html();
+  new RenderHtml({ carId }).html();
 });
 
-const carVotes = cars.map((carId) => new CarVote(carId, API_KEY));
-
-carVotes.forEach((cv) => cv.fetchVotes());
+requestAnimationFrame(() => {
+  const carVotes = cars.map((carId) => new CarVote(carId, API_KEY));
+  carVotes.forEach((cv) => cv.fetchVotes());
+});
