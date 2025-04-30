@@ -5,8 +5,6 @@ class CarVote {
     this.carId = carId.toLowerCase();
     this.carNameDisplay = carId;
     this.apiKey = apiKey;
-    // console.log(this.carId);
-    console.log(this.carNameDisplay);
     this.button = document.querySelector(`#${carId.toLowerCase()}`);
     this.display = document.querySelector(`.${carId}-vote`);
     this.button.addEventListener("click", () => this.vote());

@@ -1,8 +1,7 @@
 class RenderHtml {
   constructor(item) {
-    this.itemDisplay = item.carId; // "McLaren"
-    this.itemDisplayId = item.carId.toLowerCase(); // "mclaren"
-    console.log(this.itemDisplayId);
+    this.itemDisplay = item.carId;
+    this.itemDisplayId = item.carId.toLowerCase();
     this.toAppend = document.querySelector("#wrapper");
   }
 
@@ -13,7 +12,7 @@ class RenderHtml {
       this.itemDisplay
     }" class="car-img" />
       <div class="vote-content">
-        <h3 class="car-name">${this.itemDisplay.toUpperCase()}</h3>
+        <h2 class="car-name">${this.itemDisplay.toUpperCase()}</h2>
         <p class="vote-count ${this.itemDisplay}-vote">Loading...</p>
         <button id="${this.itemDisplayId}" class="vote-btn">Vote ${
       this.itemDisplay
