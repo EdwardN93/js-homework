@@ -5,13 +5,10 @@ class RenderHtml {
   }
 
   html() {
-    const html = `<div id="${this.item.carId.toLowerCase()}-wrapper">
-                  <span class="${this.item.carId}-vote"></span>
-                  <button id="${this.item.carId}">Vote ${
-      this.item.carId
-    }</button>
+    const html = `<div id="${this.item.toLowerCase()}-wrapper">
+                  <span class="${this.item}-vote"></span>
+                  <button id="${this.item}">Vote ${this.item}</button>
                 </div>`;
     this.toAppend.insertAdjacentHTML("beforeend", html);
-    console.log(this.item);
   }
 }

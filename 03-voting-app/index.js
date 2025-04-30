@@ -22,7 +22,6 @@ class CarVote {
   async fetchVotes() {
     this.button.disabled = true;
     const url = `https://api.api-ninjas.com/v1/counter?id=${this.carId}`;
-    console.log(this.carId);
     try {
       const response = await fetch(url, this.options);
       const data = await response.json();
@@ -52,7 +51,7 @@ class CarVote {
 
 const cars = ["mclaren", "mercedes", "ferrari", "lamborghini"];
 cars.forEach((carId) => {
-  const render = new RenderHtml({ carId });
+  const render = new RenderHtml(carId);
   render.html();
 });
 
