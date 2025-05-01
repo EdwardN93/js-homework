@@ -1,4 +1,3 @@
-const API_KEY = `kT9nWX/DQJB8hw5UyjGGYg==wEbNP4vTGxttHScM`;
 
 class CarVote {
   constructor(carId, apiKey) {
