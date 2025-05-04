@@ -9,7 +9,6 @@ class CarVote {
 
   get options() {
     return {
-      method: "GET",
       headers: {
         "X-Api-Key": this.apiKey,
         "Content-type": "application/json",
