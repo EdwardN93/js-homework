@@ -4,7 +4,7 @@ class CarVote {
     this.apiKey = apiKey;
     this.button = document.querySelector(`#${carId.toLowerCase()}`);
     this.display = document.querySelector(`.${carId}-vote`);
-    this.button.addEventListener("click", () => this.vote());
+    this.button.addEventListener("click", () => this.fetchVotes(true));
   }
 
   get options() {
@@ -17,27 +17,14 @@ class CarVote {
     };
   }
 
-  async fetchVotes() {
+  async fetchVotes(hit = false) {
     this.setLoading(true);
-    const url = `https://api.api-ninjas.com/v1/counter?id=${this.carId}`;
+    const hitParam = hit ? "&hit=true" : "";
+    const url = `https://api.api-ninjas.com/v1/counter?id=${this.carId}${hitParam}`;
     try {
       const response = await fetch(url, this.options);
       const data = await response.json();
       this.display.textContent = `${data.value} votes`;
-    } catch (err) {
-      console.error(err);
-    } finally {
-      this.setLoading(false);
-    }
-  }
-
-  async vote() {
-    this.setLoading(true);
-    const url = `https://api.api-ninjas.com/v1/counter?id=${this.carId}&hit=true`;
-    try {
-      const response = await fetch(url, this.options);
-      const data = await response.json();
-      await this.fetchVotes();
     } catch (err) {
       console.error(err);
     } finally {
