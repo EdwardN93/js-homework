@@ -1,7 +1,6 @@
 class CarVote {
   constructor(carId, apiKey) {
-    this.carId = carId.toLowerCase();
-    this.carNameDisplay = carId;
+    this.carId = carId;
     this.apiKey = apiKey;
     this.button = document.querySelector(`#${carId.toLowerCase()}`);
     this.display = document.querySelector(`.${carId}-vote`);
@@ -48,9 +47,7 @@ class CarVote {
 
   setLoading(isLoading) {
     this.button.disabled = isLoading;
-    this.button.textContent = isLoading
-      ? "Loading..."
-      : `Vote ${this.carNameDisplay}`;
+    this.button.textContent = isLoading ? "Loading..." : `Vote ${this.carId}`;
   }
 }
 
