@@ -1,4 +1,3 @@
-
 class CarVote {
   constructor(carId, apiKey) {
     this.carId = carId.toLowerCase();
@@ -61,7 +60,5 @@ cars.forEach((carId) => {
   new RenderHtml({ carId }).html();
 });
 
-requestAnimationFrame(() => {
-  const carVotes = cars.map((carId) => new CarVote(carId, API_KEY));
-  carVotes.forEach((cv) => cv.fetchVotes());
-});
+const carVotes = cars.map((carId) => new CarVote(carId, API_KEY));
+carVotes.forEach((cv) => cv.fetchVotes());
