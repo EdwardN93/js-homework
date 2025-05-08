@@ -25,10 +25,7 @@ const getStudent = (name, age, attendance) => {
   return { name, age, attendance };
 };
 
-const addStudentToList = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-
+const addStudentToList = () => {
   const name = document.querySelector(".name");
   const age = document.querySelector(".age");
   const attendance = document.querySelector("input[name=attendance]:checked");
@@ -145,4 +142,8 @@ btnCreateTeams.addEventListener("click", (e) => {
 });
 
 btnCalcAttendance.addEventListener("click", displayCalcPercentage);
-btnAddStudent.addEventListener("click", addStudentToList);
+btnAddStudent.addEventListener("click", (e) => {
+  e.preventDefault();
+  addStudentToList();
+  createTeams(selectTeams.value || 1);
+});
