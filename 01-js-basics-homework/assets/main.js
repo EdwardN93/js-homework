@@ -1,7 +1,4 @@
-console.log("Working...");
-
 const btnAddStudent = document.querySelector(".btn-add-student");
-const form = document.querySelector(".collect-data");
 const btnCalcAttendance = document.querySelector(".calculate-attendance");
 const btnCreateTeams = document.querySelector(".noOfTeams");
 const addStudent = document.querySelector(".list");
@@ -11,7 +8,6 @@ const attendancePercentageUi = document.querySelector(".attendance-percentage");
 const displayPercentageUi = document.querySelector(".attendance-percentage");
 
 const teamsUi = document.querySelector(".no-teams");
-const numTeams = document.querySelector(".numTeams");
 const selectTeams = document.querySelector("#teams");
 
 const errorMsgDiv = document.querySelector(".errorMsg");
@@ -26,16 +22,16 @@ const getStudent = (name, age, attendance) => {
 };
 
 const addStudentToList = () => {
-  const name = document.querySelector(".name");
-  const age = document.querySelector(".age");
-  const attendance = document.querySelector("input[name=attendance]:checked");
+  const dataForm = new FormData(studentFormData);
+  const { name, age, attendance } = Object.fromEntries(dataForm.entries());
+  console.log(name, age, attendance);
 
-  if (name.value.length <= 1 || age.value.length <= 1) {
+  if (name.length <= 1 || age.length <= 1) {
     errorMsgDiv.style.display = "block";
     inputErrorMsg.textContent = `Provide a valid name and age`;
 
     return;
-  } else if (!attendance) {
+  } else if (attendance === null) {
     errorMsgDiv.style.display = "block";
     inputErrorMsg.textContent = "Please select attendance";
 
@@ -50,16 +46,14 @@ const addStudentToList = () => {
 
   const html = `
   <tr class="${getAttendanceDetails(attendance).class}">
-    <td>${name.value}</td>
-    <td>${age.value.replaceAll(" ", "")}</td>
+    <td>${name}</td>
+    <td>${age.replaceAll(" ", "")}</td>
     <td>${getAttendanceDetails(attendance).status}</td>
   </tr>
   `;
 
   addStudent.insertAdjacentHTML("beforeend", html);
-  students.push(
-    getStudent(name.value, age.value, getAttendanceDetails(attendance).bool)
-  );
+  students.push(getStudent(name, age, getAttendanceDetails(attendance).bool));
 
   studentFormData.reset();
   addNumberOfTeams();
@@ -80,7 +74,7 @@ const addNumberOfTeams = () => {
 };
 
 const getAttendanceDetails = (attendance) => {
-  return attendance.value === "true"
+  return attendance === "true"
     ? { status: "Present", class: "green", bool: true }
     : { status: "Absent", class: "red", bool: false };
 };
@@ -142,7 +136,8 @@ btnCreateTeams.addEventListener("click", (e) => {
 });
 
 btnCalcAttendance.addEventListener("click", displayCalcPercentage);
-btnAddStudent.addEventListener("click", (e) => {
+
+studentFormData.addEventListener("submit", (e) => {
   e.preventDefault();
   addStudentToList();
   createTeams(selectTeams.value || 1);
